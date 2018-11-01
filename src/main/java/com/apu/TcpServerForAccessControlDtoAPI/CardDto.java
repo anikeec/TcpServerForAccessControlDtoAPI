@@ -8,20 +8,28 @@ package com.apu.TcpServerForAccessControlDtoAPI;
 import java.beans.Transient;
 import java.io.Serializable;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Value;
+import lombok.experimental.NonFinal;
+
 /**
  *
  * @author apu
  */
+@Value
 public class CardDto implements Serializable, ActivatableEntity, VisualizableEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;    
     private Integer cardId;
     private String cardNumber;
+    @NonFinal
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private Boolean active = false;
+    @NonFinal
     private Integer userId;
-
-    public CardDto() {
-    }
 
     public CardDto(Integer cardId, String cardNumber, Boolean active, Integer userId) {
         super();
@@ -32,23 +40,7 @@ public class CardDto implements Serializable, ActivatableEntity, VisualizableEnt
     }
 
     public CardDto(Integer cardId) {
-        this.cardId = cardId;
-    }
-
-    public Integer getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(Integer cardId) {
-        this.cardId = cardId;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
+        this(cardId, null, false, null);
     }
 
     public Boolean getActive() {
@@ -58,13 +50,14 @@ public class CardDto implements Serializable, ActivatableEntity, VisualizableEnt
     public void setActive(Boolean active) {
         this.active = active;
     }
-
-    public Integer getUserId() {
-        return userId;
+    
+    public Integer getId() {
+        return this.getCardId();
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    @Transient
+    public String getDescription() {
+        return this.getCardId() + " - " + this.getCardNumber();
     }
 
     @Override
@@ -90,15 +83,6 @@ public class CardDto implements Serializable, ActivatableEntity, VisualizableEnt
     @Override
     public String toString() {
         return "com.apu.TcpServerForAccessControlAPI.rest.Card[ cardId=" + cardId + " ]";
-    }
-
-    public Integer getId() {
-        return this.getCardId();
-    }
-
-    @Transient
-    public String getDescription() {
-        return this.getCardId() + " - " + this.getCardNumber();
-    }
+    }   
     
 }
